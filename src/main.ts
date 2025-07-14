@@ -1,8 +1,7 @@
-
-import { Router } from './router.ts';
-import { showLoader, hideLoader } from './ui/loader.js';
-import { initNavbar } from './ui/navbar.js';
-import { initSidebar } from './ui/sidebar.js';
+import { Router } from "./router.ts";
+import { showLoader, hideLoader } from "./components/loader.js";
+import { initNavbar } from "./components/navbar.js";
+import { initSidebar } from "./components/sidebar.js";
 
 class App {
   private router: Router;
@@ -33,6 +32,6 @@ class App {
 }
 
 // Start the application when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   new App();
 });
