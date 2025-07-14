@@ -1,11 +1,10 @@
-
-import { MealAPI, type Meal } from '../api.js';
-import { FavouritesStorage } from '../storage';
-import { createMealCard } from '../ui/mealCard.js';
-import { showLoader, hideLoader } from '../ui/loader.js';
+import { MealAPI, type Meal } from "../api.js";
+import { FavouritesStorage } from "../storage";
+import { createMealCard } from "../components/mealCard.js";
+import { showLoader, hideLoader } from "../components/loader.js";
 
 export async function loadFavouritesPage(): Promise<void> {
-  const mainContent = document.getElementById('main-content');
+  const mainContent = document.getElementById("main-content");
   if (!mainContent) return;
 
   mainContent.innerHTML = `
@@ -24,7 +23,7 @@ export async function loadFavouritesPage(): Promise<void> {
 }
 
 async function loadFavouriteMeals(): Promise<void> {
-  const favouritesGrid = document.getElementById('favourites-grid');
+  const favouritesGrid = document.getElementById("favourites-grid");
   if (!favouritesGrid) return;
 
   const favouriteIds = FavouritesStorage.getFavourites();
@@ -42,11 +41,12 @@ async function loadFavouriteMeals(): Promise<void> {
     return;
   }
 
-  favouritesGrid.innerHTML = '<div class="loading">Loading favourite recipes...</div>';
+  favouritesGrid.innerHTML =
+    '<div class="loading">Loading favourite recipes...</div>';
 
   try {
     const meals: Meal[] = [];
-    
+
     // Fetch all favourite meals
     for (const id of favouriteIds) {
       const meal = await MealAPI.getMealById(id);
@@ -56,7 +56,7 @@ async function loadFavouriteMeals(): Promise<void> {
     }
 
     // Clear loading message
-    favouritesGrid.innerHTML = '';
+    favouritesGrid.innerHTML = "";
 
     if (meals.length === 0) {
       favouritesGrid.innerHTML = `
@@ -69,32 +69,35 @@ async function loadFavouriteMeals(): Promise<void> {
     }
 
     // Display favourite meals
-    meals.forEach(meal => {
+    meals.forEach((meal) => {
       const card = createMealCard(meal);
-      
+
       // Add special styling for favourites page
-      card.style.position = 'relative';
-      
+      card.style.position = "relative";
+
       // Override the favourite button to show removal with loader
-      const favouriteBtn = card.querySelector('.favourite-btn') as HTMLButtonElement;
+      const favouriteBtn = card.querySelector(
+        ".favourite-btn"
+      ) as HTMLButtonElement;
       if (favouriteBtn) {
-        favouriteBtn.addEventListener('click', async (e) => {
+        favouriteBtn.addEventListener("click", async (e) => {
           e.stopPropagation();
-          
+
           // Show mini loader
           showLoader();
-          
+
           // Remove from favourites
           FavouritesStorage.removeFavourite(meal.idMeal);
-          
+
           // Wait for loader effect
           setTimeout(() => {
             hideLoader();
             // Remove card from DOM
             card.remove();
-            
+
             // Check if no more favourites
-            const remainingCards = favouritesGrid.querySelectorAll('.meal-card');
+            const remainingCards =
+              favouritesGrid.querySelectorAll(".meal-card");
             if (remainingCards.length === 0) {
               favouritesGrid.innerHTML = `
                 <div class="favourites-empty-state">
@@ -109,12 +112,11 @@ async function loadFavouriteMeals(): Promise<void> {
           }, 500);
         });
       }
-      
+
       favouritesGrid.appendChild(card);
     });
-
   } catch (error) {
-    console.error('Error loading favourite meals:', error);
+    console.error("Error loading favourite meals:", error);
     favouritesGrid.innerHTML = `
       <div class="error-message">
         <h3>Error</h3>
