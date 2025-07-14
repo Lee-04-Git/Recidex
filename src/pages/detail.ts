@@ -1,16 +1,16 @@
-
-import { MealAPI } from '../api.js';
-import { createMealDetail } from '../ui/mealDetail.js';
+import { MealAPI } from "../api.js";
+import { createMealDetail } from "../components/mealDetail.js";
 
 export async function loadDetailPage(mealId: string): Promise<void> {
-  const mainContent = document.getElementById('main-content');
+  const mainContent = document.getElementById("main-content");
   if (!mainContent) return;
 
-  mainContent.innerHTML = '<div class="loading text-center">Loading recipe details...</div>';
+  mainContent.innerHTML =
+    '<div class="loading text-center">Loading recipe details...</div>';
 
   try {
     const meal = await MealAPI.getMealById(mealId);
-    
+
     if (!meal) {
       mainContent.innerHTML = `
         <div class="error-message">
@@ -25,11 +25,10 @@ export async function loadDetailPage(mealId: string): Promise<void> {
     }
 
     const detailElement = createMealDetail(meal);
-    mainContent.innerHTML = '';
+    mainContent.innerHTML = "";
     mainContent.appendChild(detailElement);
-
   } catch (error) {
-    console.error('Error loading meal detail:', error);
+    console.error("Error loading meal detail:", error);
     mainContent.innerHTML = `
       <div class="error-message">
         <h3>Error</h3>
