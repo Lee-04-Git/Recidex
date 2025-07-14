@@ -23,7 +23,7 @@ export async function loadHomePage(category?: string): Promise<void> {
         placeholder="Search for recipes..."
       >
     </div>
-    <div id="meals-container">
+    <div id="meals-container" style="opacity: 0;">
       <div class="meals-grid" id="meals-grid">
         <div class="empty-state">
           <h3>Search for recipes above to get started</h3>
@@ -64,13 +64,26 @@ export async function loadHomePage(category?: string): Promise<void> {
     });
   }
 
-  // Load initial content - default to "All" category if no category specified
-  const defaultCategory = category || "All";
-  if (defaultCategory === "All") {
-    await loadAllMeals();
-  } else {
-    await loadMealsByCategory(defaultCategory);
-  }
+  // Show loader and hide meals container initially
+  showLoader();
+
+  // Load initial content after 500ms - default to "All" category if no category specified
+  setTimeout(async () => {
+    const defaultCategory = category || "All";
+    if (defaultCategory === "All") {
+      await loadAllMeals();
+    } else {
+      await loadMealsByCategory(defaultCategory);
+    }
+
+    // Fade in the meals container
+    const mealsContainer = document.getElementById("meals-container");
+    if (mealsContainer) {
+      mealsContainer.style.opacity = "1";
+    }
+
+    hideLoader();
+  }, 500);
 }
 
 async function searchMeals(query: string): Promise<void> {
@@ -84,9 +97,6 @@ async function searchMeals(query: string): Promise<void> {
 }
 
 async function loadAllMeals(): Promise<void> {
-  // Show loader for category switching
-  showLoader();
-
   try {
     // Get all categories and fetch meals from each
     const categories = await MealAPI.getCategories();
@@ -103,38 +113,20 @@ async function loadAllMeals(): Promise<void> {
         index === self.findIndex((m) => m.idMeal === meal.idMeal)
     );
 
-    // Wait for 1 second then display results
-    setTimeout(() => {
-      displayMeals(uniqueMeals, "All Recipes");
-      hideLoader();
-    }, 1000);
+    displayMeals(uniqueMeals, "All Recipes");
   } catch (error) {
     console.error("Error loading all meals:", error);
-    setTimeout(() => {
-      showError("Failed to load all meals");
-      hideLoader();
-    }, 1000);
+    showError("Failed to load all meals");
   }
 }
 
 async function loadMealsByCategory(category: string): Promise<void> {
-  // Show loader for category switching
-  showLoader();
-
   try {
     const meals = await MealAPI.filterByCategory(category);
-
-    // Wait for 1 second then display results
-    setTimeout(() => {
-      displayMeals(meals, `${category} Recipes`);
-      hideLoader();
-    }, 1000);
+    displayMeals(meals, `${category} Recipes`);
   } catch (error) {
     console.error("Error loading category meals:", error);
-    setTimeout(() => {
-      showError("Failed to load category meals");
-      hideLoader();
-    }, 1000);
+    showError("Failed to load category meals");
   }
 }
 
