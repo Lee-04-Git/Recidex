@@ -104,7 +104,7 @@ body.loading .search-container {
   overflow: hidden;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeInUp 0.3s ease-out forwards;
+  animation: fadeInUp 0.2s ease-out forwards;
 }
 
 @keyframes fadeInUp {
@@ -120,7 +120,7 @@ body.loading .search-container {
 
 /* Meals container fade-in animation - faster */
 #meals-container {
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.2s ease-out;
 }
 
 #meals-container.fade-in {
@@ -129,40 +129,40 @@ body.loading .search-container {
 
 /* Faster staggered card animations */
 .meal-card:nth-child(1) {
-  animation-delay: 0.02s;
+  animation-delay: 0.01s;
 }
 .meal-card:nth-child(2) {
-  animation-delay: 0.04s;
+  animation-delay: 0.02s;
 }
 .meal-card:nth-child(3) {
-  animation-delay: 0.06s;
+  animation-delay: 0.03s;
 }
 .meal-card:nth-child(4) {
-  animation-delay: 0.08s;
+  animation-delay: 0.04s;
 }
 .meal-card:nth-child(5) {
-  animation-delay: 0.1s;
+  animation-delay: 0.05s;
 }
 .meal-card:nth-child(6) {
-  animation-delay: 0.12s;
+  animation-delay: 0.06s;
 }
 .meal-card:nth-child(7) {
-  animation-delay: 0.14s;
+  animation-delay: 0.07s;
 }
 .meal-card:nth-child(8) {
-  animation-delay: 0.16s;
+  animation-delay: 0.08s;
 }
 .meal-card:nth-child(9) {
-  animation-delay: 0.18s;
+  animation-delay: 0.09s;
 }
 .meal-card:nth-child(10) {
-  animation-delay: 0.2s;
+  animation-delay: 0.1s;
 }
 .meal-card:nth-child(11) {
-  animation-delay: 0.22s;
+  animation-delay: 0.11s;
 }
 .meal-card:nth-child(12) {
-  animation-delay: 0.24s;
+  animation-delay: 0.12s;
 }
 
 .meal-card:hover {
@@ -191,6 +191,12 @@ body.loading .search-container {
   height: 100%;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .logo {
@@ -249,6 +255,7 @@ body.loading .search-container {
   display: flex;
   margin-top: 60px;
   min-height: calc(100vh - 60px);
+  transition: all 0.4s ease;
 }
 
 .sidebar {
@@ -258,6 +265,69 @@ body.loading .search-container {
   padding: 20px;
   overflow-y: auto;
   position: relative;
+  transform: translateX(0);
+  transition: transform 0.4s ease, width 0.4s ease;
+  z-index: 100;
+}
+
+.sidebar.collapsed {
+  transform: translateX(-100%);
+  width: 0;
+  padding: 0;
+  border-right: none;
+}
+
+/* Sidebar Toggle Button - now in navbar */
+.sidebar-toggle {
+  width: 36px;
+  height: 36px;
+  background-color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px var(--shadow-light);
+}
+
+.sidebar-toggle:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: scale(1.1);
+}
+
+.sidebar-toggle.collapsed {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.sidebar-toggle.collapsed:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.sidebar-toggle svg {
+  width: 18px;
+  height: 18px;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-toggle.collapsed svg {
+  color: var(--text-primary);
+}
+
+.sidebar-toggle.collapsed:hover svg {
+  color: white;
+}
+
+/* Icon rotation animation */
+.sidebar-toggle.collapsed svg {
+  transform: rotate(180deg);
 }
 
 /* Enhanced Custom Scrollbar for Sidebar */
@@ -348,6 +418,11 @@ body.loading .search-container {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  transition: margin-left 0.4s ease;
+}
+
+.main-content.expanded {
+  margin-left: 0;
 }
 
 .search-container {
@@ -648,7 +723,7 @@ body.loading .search-container {
 
 /* Favourites container fade-in animation - faster */
 #favourites-container {
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.2s ease-out;
 }
 
 #favourites-container.fade-in {
@@ -674,9 +749,23 @@ body.loading #detail-container {
   pointer-events: none;
 }
 
+/* Detail container fade-in animation */
+#detail-container {
+  transition: opacity 0.2s ease-out;
+}
+
+#detail-container.fade-in {
+  opacity: 1;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     width: 200px;
+  }
+
+  /* Hide sidebar toggle button on mobile */
+  .sidebar-toggle {
+    display: none;
   }
 
   .navbar-content {
@@ -712,6 +801,15 @@ body.loading #detail-container {
     height: auto;
     border-right: none;
     border-bottom: 2px solid var(--border-color);
+    position: static;
+    transform: none;
+  }
+
+  .sidebar.collapsed {
+    transform: translateY(-100%);
+    height: 0;
+    padding: 0;
+    border-bottom: none;
   }
 
   .categories-list {
@@ -734,5 +832,9 @@ body.loading #detail-container {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+  }
+
+  .main-content {
+    padding: 15px;
   }
 }
