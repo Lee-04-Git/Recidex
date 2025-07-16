@@ -76,14 +76,15 @@ export async function loadHomePage(category?: string): Promise<void> {
       await loadMealsByCategory(defaultCategory);
     }
 
-    // Fade in the meals container
+    // Fade in the meals container faster
     const mealsContainer = document.getElementById("meals-container");
     if (mealsContainer) {
+      mealsContainer.style.transition = "opacity 0.3s ease-out";
       mealsContainer.style.opacity = "1";
     }
 
     hideLoader();
-  }, 500);
+  }, 100);
 }
 
 async function searchMeals(query: string): Promise<void> {
