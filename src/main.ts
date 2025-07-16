@@ -1,4 +1,4 @@
-import { Router } from "./router.ts";
+import { Router } from "./router.js";
 import { showLoader, hideLoader } from "./components/loader.js";
 import { initNavbar } from "./components/navbar.js";
 import { initSidebar } from "./components/sidebar.js";
@@ -24,10 +24,10 @@ class App {
     // Initialize router
     this.router.init();
 
-    // Hide loader after 1 second
+    // Hide loader after 500ms
     setTimeout(() => {
       hideLoader();
-    }, 1000);
+    }, 100);
   }
 }
 
