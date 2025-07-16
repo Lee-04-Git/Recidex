@@ -36,4 +36,19 @@ export function initNavbar(): void {
       }
     });
   }
+
+  // Create navbar-left structure if it doesn't exist
+  const navbarContent = document.querySelector(".navbar-content");
+  if (navbarContent && !document.querySelector(".navbar-left")) {
+    const leftSection = document.createElement("div");
+    leftSection.className = "navbar-left";
+
+    // Move the logo to the left section
+    const logo = document.querySelector(".logo");
+    if (logo) {
+      leftSection.appendChild(logo);
+    }
+
+    navbarContent.insertBefore(leftSection, navbarContent.firstChild);
+  }
 }
