@@ -1,11 +1,14 @@
 import { MealAPI, type Meal } from "../api.js";
-import { FavouritesStorage } from "../storage";
+import { FavouritesStorage } from "../storage.js";
 import { createMealCard } from "../components/mealCard.js";
 import { showLoader, hideLoader } from "../components/loader.js";
 
 export async function loadFavouritesPage(): Promise<void> {
   const mainContent = document.getElementById("main-content");
   if (!mainContent) return;
+
+  // Show loader immediately
+  showLoader();
 
   mainContent.innerHTML = `
     <div class="favourites-header">
@@ -16,10 +19,24 @@ export async function loadFavouritesPage(): Promise<void> {
         My Favourite Recipes
       </h1>
     </div>
-    <div class="meals-grid" id="favourites-grid"></div>
+    <div id="favourites-container" style="opacity: 0;">
+      <div class="meals-grid" id="favourites-grid"></div>
+    </div>
   `;
 
-  await loadFavouriteMeals();
+  // Wait for 500ms loader, then load content
+  setTimeout(async () => {
+    await loadFavouriteMeals();
+
+    // Fade in the favourites container faster
+    const favouritesContainer = document.getElementById("favourites-container");
+    if (favouritesContainer) {
+      favouritesContainer.style.transition = "opacity 0.3s ease-out";
+      favouritesContainer.style.opacity = "1";
+    }
+
+    hideLoader();
+  }, 100);
 }
 
 async function loadFavouriteMeals(): Promise<void> {
@@ -89,7 +106,7 @@ async function loadFavouriteMeals(): Promise<void> {
           // Remove from favourites
           FavouritesStorage.removeFavourite(meal.idMeal);
 
-          // Wait for loader effect
+          // Wait for loader effect (500ms)
           setTimeout(() => {
             hideLoader();
             // Remove card from DOM
