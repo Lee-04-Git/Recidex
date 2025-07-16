@@ -94,7 +94,7 @@ body.loading .search-container {
   z-index: 5000;
 }
 
-/* Card Fade-in Animation */
+/* Card Fade-in Animation - faster timing */
 .meal-card {
   background-color: var(--bg-secondary);
   border: 2px solid var(--border-color);
@@ -104,7 +104,7 @@ body.loading .search-container {
   overflow: hidden;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeInUp 0.5s ease-out forwards;
+  animation: fadeInUp 0.3s ease-out forwards;
 }
 
 @keyframes fadeInUp {
@@ -118,50 +118,51 @@ body.loading .search-container {
   }
 }
 
-/* Meals container fade-in animation */
+/* Meals container fade-in animation - faster */
 #meals-container {
-  transition: opacity 0.5s ease-out;
+  transition: opacity 0.3s ease-out;
 }
 
 #meals-container.fade-in {
   opacity: 1;
 }
 
+/* Faster staggered card animations */
 .meal-card:nth-child(1) {
-  animation-delay: 0.05s;
+  animation-delay: 0.02s;
 }
 .meal-card:nth-child(2) {
-  animation-delay: 0.1s;
+  animation-delay: 0.04s;
 }
 .meal-card:nth-child(3) {
-  animation-delay: 0.15s;
+  animation-delay: 0.06s;
 }
 .meal-card:nth-child(4) {
-  animation-delay: 0.2s;
+  animation-delay: 0.08s;
 }
 .meal-card:nth-child(5) {
-  animation-delay: 0.25s;
+  animation-delay: 0.1s;
 }
 .meal-card:nth-child(6) {
-  animation-delay: 0.3s;
+  animation-delay: 0.12s;
 }
 .meal-card:nth-child(7) {
-  animation-delay: 0.35s;
+  animation-delay: 0.14s;
 }
 .meal-card:nth-child(8) {
-  animation-delay: 0.4s;
+  animation-delay: 0.16s;
 }
 .meal-card:nth-child(9) {
-  animation-delay: 0.45s;
+  animation-delay: 0.18s;
 }
 .meal-card:nth-child(10) {
-  animation-delay: 0.5s;
+  animation-delay: 0.2s;
 }
 .meal-card:nth-child(11) {
-  animation-delay: 0.55s;
+  animation-delay: 0.22s;
 }
 .meal-card:nth-child(12) {
-  animation-delay: 0.6s;
+  animation-delay: 0.24s;
 }
 
 .meal-card:hover {
@@ -643,6 +644,34 @@ body.loading .search-container {
   padding: 15px;
   text-align: center;
   margin: 20px 0;
+}
+
+/* Favourites container fade-in animation - faster */
+#favourites-container {
+  transition: opacity 0.3s ease-out;
+}
+
+#favourites-container.fade-in {
+  opacity: 1;
+}
+
+/* Ensure content is hidden during loading on favourites page */
+body.loading #favourites-container {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Keep favourites header visible during loading */
+body.loading .favourites-header {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 5000;
+}
+
+/* Hide detail content during loading */
+body.loading #detail-container {
+  opacity: 0;
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
